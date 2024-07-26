@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ActiveCollab TemplatedUI project.
+ * This file is part of the ActiveCollab Templated UI project.
  *
  * (c) A51 doo <info@activecollab.com>
  */
