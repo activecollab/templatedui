@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
-use ActiveCollab\TemplatedUI\Integrate\RootPathResolverInterface;
+use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\MethodInvoker\CatchAllParameters\CatchAllParametersInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
 class TemplateTag extends Tag
 {
     public function __construct(
-        private RootPathResolverInterface $rootPathResolver,
+        private PathsResolverInterface $pathsResolver,
     )
     {
     }
@@ -28,7 +28,7 @@ class TemplateTag extends Tag
     ): string
     {
         return $this->fetch(
-            sprintf('%s/%s.tpl', $this->rootPathResolver->getPath(), $sitemapPath),
+            sprintf('%s/%s.tpl', $this->pathsResolver->getTemplatesPath(), $sitemapPath),
             $catchAllParameters->getParameters(),
         );
     }

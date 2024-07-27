@@ -10,14 +10,14 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
-use ActiveCollab\TemplatedUI\Integrate\RootUrlResolverInterface;
+use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Integrate\UrlAssemblerInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
 class UrlTag extends Tag
 {
     public function __construct(
-        private RootUrlResolverInterface $rootUrlResolver,
+        private PathsResolverInterface $pathsResolver,
         private UrlAssemblerInterface $urlAssembler,
     )
     {
@@ -30,7 +30,7 @@ class UrlTag extends Tag
     {
         return sprintf(
             '%s/%s',
-            $this->rootUrlResolver->getUrl(),
+            $this->pathsResolver->getRootUrl(),
             $this->urlAssembler->pathFor($routeName, $data ?? []),
         );
     }

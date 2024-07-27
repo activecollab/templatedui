@@ -10,19 +10,24 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
-use ActiveCollab\TemplatedUI\Integrate\RootUrlResolverInterface;
+use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
 class ApplicationStyleTag extends Tag
 {
     public function __construct(
-        private RootUrlResolverInterface $rootUrlResolver,
+        private PathsResolverInterface $pathsResolver,
     )
     {
     }
 
-    public function render(): string
+    public function render(string $styleName = 'main.css'): string
     {
-        return sprintf('%s/assets/main.css?%d', $this->rootUrlResolver->getUrl(), time());
+        return sprintf(
+            '%s/%s?%d',
+            $this->pathsResolver->getAssetsUrl(),
+            $styleName,
+            $this->pathsResolver->getAssetTimestamp($styleName) ?? time(),
+        );
     }
 }

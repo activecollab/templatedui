@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
-use ActiveCollab\TemplatedUI\Integrate\RootUrlResolverInterface;
+use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
 class ApplicationScriptTag extends Tag
 {
     public function __construct(
-        private RootUrlResolverInterface $rootUrlResolver,
+        private PathsResolverInterface $pathsResolver,
     )
     {
     }
@@ -24,10 +24,10 @@ class ApplicationScriptTag extends Tag
     public function render(string $scriptName = 'application.js'): string
     {
         return sprintf(
-            '%s/assets/%s?%d',
-            $this->rootUrlResolver->getUrl(),
+            '%s/%s?%d',
+            $this->pathsResolver->getAssetsUrl(),
             $scriptName,
-            time(),
+            $this->pathsResolver->getAssetTimestamp($scriptName) ?? time(),
         );
     }
 }

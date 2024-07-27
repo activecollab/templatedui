@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
-use ActiveCollab\TemplatedUI\Integrate\RootUrlResolverInterface;
+use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
 class AssetTag extends Tag
 {
     public function __construct(
-        private RootUrlResolverInterface $rootUrlResolver,
+        private PathsResolverInterface $pathsResolver,
     )
     {
     }
@@ -24,9 +24,10 @@ class AssetTag extends Tag
     public function render(string $assetPath): string
     {
         return sprintf(
-            '%s/assets/%s',
-            $this->rootUrlResolver->getUrl(),
+            '%s/%s?%d',
+            $this->pathsResolver->getAssetsUrl(),
             $assetPath,
+            $this->pathsResolver->getAssetTimestamp($assetPath) ?? time(),
         );
     }
 }
