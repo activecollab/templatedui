@@ -13,7 +13,7 @@ namespace ActiveCollab\TemplatedUI\Base;
 use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
-class AssetTag extends Tag
+class AssetUrlTag extends Tag
 {
     public function __construct(
         private PathsResolverInterface $pathsResolver,
