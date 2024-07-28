@@ -13,7 +13,7 @@ namespace ActiveCollab\TemplatedUI\Base;
 use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
-class ApplicationScriptTag extends Tag
+class StyleUrlTag extends Tag
 {
     public function __construct(
         private PathsResolverInterface $pathsResolver,
@@ -21,13 +21,13 @@ class ApplicationScriptTag extends Tag
     {
     }
 
-    public function render(string $scriptName = 'application.js'): string
+    public function render(string $styleName = 'main.css'): string
     {
         return sprintf(
             '%s/%s?%d',
             $this->pathsResolver->getAssetsUrl(),
-            $scriptName,
-            $this->pathsResolver->getAssetTimestamp($scriptName) ?? time(),
+            $styleName,
+            $this->pathsResolver->getAssetTimestamp($styleName) ?? time(),
         );
     }
 }
