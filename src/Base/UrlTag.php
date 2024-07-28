@@ -30,8 +30,30 @@ class UrlTag extends Tag
     {
         return sprintf(
             '%s/%s',
-            $this->pathsResolver->getRootUrl(),
-            $this->urlAssembler->pathFor($routeName, $data ?? []),
+            $this->getRootUrl(),
+            $this->cleanUpPath(
+                $this->urlAssembler->pathFor($routeName, $data ?? []),
+            ),
         );
+    }
+
+    private ?string $root_url = null;
+
+    private function getRootUrl(): string
+    {
+        if ($this->root_url === null) {
+            $this->root_url = rtrim($this->pathsResolver->getRootUrl(), '/');
+        }
+
+        return $this->root_url;
+    }
+
+    private function cleanUpPath(string $path): string
+    {
+        if (!str_starts_with($path, '/')) {
+            return $path;
+        }
+
+        return substr($path, 1);
     }
 }
