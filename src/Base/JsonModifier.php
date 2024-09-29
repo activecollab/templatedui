@@ -16,7 +16,7 @@ use ActiveCollab\TemplatedUI\Modifier\Modifier;
 class JsonModifier extends Modifier
 {
     public function __construct(
-        private JsonEncoderInterface $jsonEncoder
+        private JsonEncoderInterface $jsonEncoder,
     )
     {
     }

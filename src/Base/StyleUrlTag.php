@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
+use ActiveCollab\CurrentTimestamp\CurrentTimestampInterface;
 use ActiveCollab\TemplatedUI\Integrate\PathsResolverInterface;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 
@@ -17,6 +18,7 @@ class StyleUrlTag extends Tag
 {
     public function __construct(
         private PathsResolverInterface $pathsResolver,
+        private CurrentTimestampInterface $currentTimestamp,
     )
     {
     }
@@ -27,7 +29,7 @@ class StyleUrlTag extends Tag
             '%s/%s?%d',
             $this->pathsResolver->getAssetsUrl(),
             $styleName,
-            $this->pathsResolver->getAssetTimestamp($styleName) ?? time(),
+            $this->pathsResolver->getAssetTimestamp($styleName) ?? $this->currentTimestamp->getCurrentTimestamp(),
         );
     }
 }
