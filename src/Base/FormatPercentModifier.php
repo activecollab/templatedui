@@ -10,14 +10,21 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Base;
 
+use ActiveCollab\TemplatedUI\Integrate\NumberFormatterInterface;
 use ActiveCollab\TemplatedUI\Modifier\Modifier;
 
 class FormatPercentModifier extends Modifier
 {
     public function modify(
-        int $percent,
+        int                       $percent,
+        ?NumberFormatterInterface $numberFormatter = null,
+        bool                      $trimZeros = false,
     ): string
     {
+        if ($numberFormatter) {
+            return sprintf('%s%%', $numberFormatter->formatInt($percent, $trimZeros));
+        }
+
         return sprintf('%d%%', $percent);
     }
 }
