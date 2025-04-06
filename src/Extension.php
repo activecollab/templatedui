@@ -74,6 +74,11 @@ abstract class Extension implements ExtensionInterface, ContainerAccessInterface
         return $this->getContainer()->get($id);
     }
 
+    /**
+     * @template TClassName
+     * @param  class-string<TClassName> $id
+     * @return TClassName
+     */
     protected function getExtension(string $extensionType): ?ExtensionInterface
     {
         return $this->get(SmartyFactoryInterface::class)->getExtension($extensionType);
