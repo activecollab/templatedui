@@ -13,24 +13,25 @@ namespace ActiveCollab\TemplatedUI\Base;
 use ActiveCollab\TemplatedUI\Integrate\NumberFormatterInterface;
 use ActiveCollab\TemplatedUI\Modifier\Modifier;
 
-class FormatPercentModifier extends Modifier
+class FormatNumberModifier extends Modifier
 {
     public function modify(
-        int $percent,
+        int|float $number,
         ?NumberFormatterInterface $numberFormatter = null,
-        bool $trimZeros = false,
+        int $decimals = 2,
+        bool $trimZeros = true,
+        int $shortNotationAfter = 1000,
     ): string
     {
         if ($numberFormatter) {
-            return sprintf(
-                '%s%%',
-                $numberFormatter->formatNumber(
-                    $percent,
-                    trimZeros:  $trimZeros,
-                ),
+            return $numberFormatter->formatNumber(
+                $number,
+                $decimals,
+                $trimZeros,
+                $shortNotationAfter,
             );
         }
 
-        return sprintf('%d%%', $percent);
+        return number_format($number);
     }
 }
