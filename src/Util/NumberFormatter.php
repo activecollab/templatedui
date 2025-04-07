@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\Util;
 
-class NumberFormatter
+use ActiveCollab\TemplatedUI\Integrate\NumberFormatterInterface;
+
+class NumberFormatter implements NumberFormatterInterface
 {
     public function __construct(
         private string $decimalSeparator = '.',

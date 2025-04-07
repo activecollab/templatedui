@@ -45,7 +45,12 @@ class FormatPercentModifierTest extends TestCase
                 1000,
                 new class implements NumberFormatterInterface
                 {
-                    public function formatInt(int $number): string
+                    public function formatNumber(
+                        int|float $number,
+                        int $decimals = 2,
+                        bool $trimZeros = true,
+                        int $shortNotationAfter = 1000,
+                    ): string
                     {
                         return number_format($number, 0, '.', ',');
                     }
