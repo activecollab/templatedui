@@ -16,7 +16,7 @@ use ActiveCollab\TemplatedUI\Modifier\Modifier;
 class FormatPercentModifier extends Modifier
 {
     public function modify(
-        int $percent,
+        int|float $percent,
         ?NumberFormatterInterface $numberFormatter = null,
         bool $trimZeros = false,
     ): string
