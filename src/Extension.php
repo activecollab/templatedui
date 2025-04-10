@@ -76,7 +76,7 @@ abstract class Extension implements ExtensionInterface, ContainerAccessInterface
 
     /**
      * @template TClassName
-     * @param  class-string<TClassName> $id
+     * @param  class-string<TClassName> $extensionType
      * @return TClassName
      */
     protected function getExtension(string $extensionType): ?ExtensionInterface
