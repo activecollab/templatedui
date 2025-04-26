@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI;
 
-interface ExtensionInterface
+use ActiveCollab\TemplatedUI\MethodInvoker\InvocableMethodContextInterface;
+
+interface ExtensionInterface extends InvocableMethodContextInterface
 {
     public function getExtensionName(): string;
 }

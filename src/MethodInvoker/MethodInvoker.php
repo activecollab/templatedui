@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace ActiveCollab\TemplatedUI\MethodInvoker;
 
 use LogicException;
-use ActiveCollab\TemplatedUI\ExtensionInterface;
 use ActiveCollab\TemplatedUI\MethodInvoker\CatchAllParameters\CatchAllParameters;
 use ActiveCollab\TemplatedUI\MethodInvoker\ParameterCaster\ParameterCaster;
 use ActiveCollab\TemplatedUI\MethodInvoker\ParameterCaster\ParameterCasterInterface;
@@ -20,11 +19,10 @@ use RuntimeException;
 
 class MethodInvoker implements MethodInvokerInterfaca
 {
-    private ExtensionInterface $invocationContext;
-
-    public function __construct(ExtensionInterface $invocationContext)
+    public function __construct(
+        private InvocableMethodContextInterface $invocableMethodContext,
+    )
     {
-        $this->invocationContext = $invocationContext;
     }
 
     private array $parameterMaps = [];
@@ -37,7 +35,7 @@ class MethodInvoker implements MethodInvokerInterfaca
         if (!array_key_exists($methodName, $this->parameterMaps)) {
             $this->parameterMaps[$methodName] = [];
 
-            $reflection = new ReflectionClass($this->invocationContext);
+            $reflection = new ReflectionClass($this->invocableMethodContext);
 
             if (!$reflection->hasMethod($methodName)) {
                 throw new LogicException(sprintf('Method %s not found in class %s.', $methodName, get_class($this)));
@@ -98,7 +96,7 @@ class MethodInvoker implements MethodInvokerInterfaca
             throw new LogicException(
                 sprintf(
                     'Required arguments not found in %s call: %s.',
-                    $this->invocationContext->getExtensionName(),
+                    $this->invocableMethodContext::class,
                     implode(', ', $missingRequiredParameters),
                 )
             );
@@ -110,7 +108,7 @@ class MethodInvoker implements MethodInvokerInterfaca
 
         return call_user_func_array(
             [
-                $this->invocationContext,
+                $this->invocableMethodContext,
                 $method,
             ],
             $callFuncParams

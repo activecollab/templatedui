@@ -36,7 +36,8 @@ class MethodInvokerTest extends TestCase
     public function testWillThrowExceptionOnMissingRequiredParameter(): void
     {
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Required arguments not found in example call: number');
+        $this->expectExceptionMessage('Required arguments not found');
+        $this->expectExceptionMessage(': number');
 
         $tag = new class() extends Tag {
             public function getExtensionName(): string
