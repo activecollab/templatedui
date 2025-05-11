@@ -20,7 +20,7 @@ class FormatNumberModifier extends Modifier
         ?NumberFormatterInterface $numberFormatter = null,
         int $decimals = 2,
         bool $trimZeros = true,
-        int $shortNotationAfter = 1000,
+        int $shortNotationAfter = 10000,
     ): string
     {
         if ($numberFormatter) {
