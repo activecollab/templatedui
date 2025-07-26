@@ -33,20 +33,14 @@ class ParameterCaster implements ParameterCasterInterface
 
     public function castToType($inputValue)
     {
-        switch ($this->parameter->getType()->getName()) {
-            case 'string':
-                return (string) $inputValue;
-            case 'int':
-                return (int) $inputValue;
-            case 'float':
-                return is_int($inputValue) ? $inputValue : (float) $inputValue;
-            case 'bool':
-                return (bool) $inputValue;
-            case 'array':
-                return (array) $inputValue;
-            default:
-                return $inputValue;
-        }
+        return match ($this->parameter->getType()->getName()) {
+            'string' => (string)$inputValue,
+            'int' => (int)$inputValue,
+            'float' => is_int($inputValue) ? $inputValue : (float)$inputValue,
+            'bool' => (bool)$inputValue,
+            'array' => (array)$inputValue,
+            default => $inputValue,
+        };
     }
 
     public function checkLooseCasting(): bool
