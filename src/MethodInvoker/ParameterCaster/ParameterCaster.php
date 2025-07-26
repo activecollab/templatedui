@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\MethodInvoker\ParameterCaster;
 
+use ReflectionNamedType;
 use ReflectionParameter;
+use ReflectionUnionType;
 
 class ParameterCaster implements ParameterCasterInterface
 {
@@ -33,6 +35,10 @@ class ParameterCaster implements ParameterCasterInterface
 
     public function castToType($inputValue)
     {
+        if ($this->parameter->getType() instanceof ReflectionUnionType) {
+            return $inputValue;
+        }
+
         return match ($this->parameter->getType()->getName()) {
             'string' => (string)$inputValue,
             'int' => (int)$inputValue,
@@ -45,6 +51,10 @@ class ParameterCaster implements ParameterCasterInterface
 
     public function checkLooseCasting(): bool
     {
+        if ($this->parameter->getType() instanceof ReflectionUnionType) {
+            return false;
+        }
+
         return in_array(
             $this->parameter->getType()->getName(),
             [

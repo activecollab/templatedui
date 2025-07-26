@@ -18,6 +18,7 @@ use ActiveCollab\TemplatedUI\MethodInvoker\CatchAllParameters\CatchAllParameters
 use ActiveCollab\TemplatedUI\MethodInvoker\MethodInvoker;
 use ActiveCollab\TemplatedUI\Tag\Tag;
 use RuntimeException;
+use Stringable;
 
 class MethodInvokerTest extends TestCase
 {
@@ -146,6 +147,42 @@ class MethodInvokerTest extends TestCase
                     'date' => new DateTimeValue(),
                 ]
             )
+        );
+    }
+
+    public function testWillNotCastUnionParameters(): void
+    {
+        $tag = new class() extends Tag {
+            public function render(Stringable|string $value): Stringable|string
+            {
+                return $value;
+            }
+        };
+
+        $invoker = new MethodInvoker($tag);
+        $this->assertSame(
+            'Scalar string',
+            $invoker->invokeMethod(
+                'render',
+                [
+                    'value' => 'Scalar string',
+                ],
+            ),
+        );
+
+        $this->assertSame(
+            'Stringable object',
+            (string) $invoker->invokeMethod(
+                'render',
+                [
+                    'value' => new class implements Stringable{
+                        public function __toString(): string
+                        {
+                            return 'Stringable object';
+                        }
+                    },
+                ],
+            ),
         );
     }
 
