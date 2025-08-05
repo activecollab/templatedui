@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace ActiveCollab\TemplatedUI\MethodInvoker\ParameterCaster;
 
 use ReflectionEnum;
+use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
@@ -45,7 +46,11 @@ class ParameterCaster implements ParameterCasterInterface
                 return $inputValue;
             }
 
-            $enumReflection = new ReflectionEnum($this->parameter->getType()->getName());
+            try {
+                $enumReflection = new ReflectionEnum($this->parameter->getType()->getName());
+            } catch (ReflectionException) {
+                return $inputValue;
+            }
 
             if (!$enumReflection->isBacked()) {
                 return $inputValue;
