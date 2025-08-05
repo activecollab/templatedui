@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\MethodInvoker\ParameterCaster;
 
+use ReflectionEnum;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
@@ -39,12 +40,32 @@ class ParameterCaster implements ParameterCasterInterface
             return $inputValue;
         }
 
+        if (!$this->parameter->getType()->isBuiltin()) {
+            if (!is_scalar($inputValue)) {
+                return $inputValue;
+            }
+
+            $enumReflection = new ReflectionEnum($this->parameter->getType()->getName());
+
+            if (!$enumReflection->isBacked()) {
+                return $inputValue;
+            }
+
+            foreach ($enumReflection->getCases() as $case) {
+                if ($case->getBackingValue() === $inputValue) {
+                    return $case->getValue();
+                }
+            }
+
+            return $inputValue;
+        }
+
         return match ($this->parameter->getType()->getName()) {
-            'string' => (string)$inputValue,
-            'int' => (int)$inputValue,
-            'float' => is_int($inputValue) ? $inputValue : (float)$inputValue,
-            'bool' => (bool)$inputValue,
-            'array' => (array)$inputValue,
+            'string' => (string) $inputValue,
+            'int' => (int) $inputValue,
+            'float' => is_int($inputValue) ? $inputValue : (float) $inputValue,
+            'bool' => (bool) $inputValue,
+            'array' => (array) $inputValue,
             default => $inputValue,
         };
     }

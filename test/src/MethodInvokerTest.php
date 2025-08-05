@@ -13,6 +13,7 @@ namespace ActiveCollab\TemplatedUI\Test;
 use ActiveCollab\DateValue\DateTimeValue;
 use ActiveCollab\DateValue\DateTimeValueInterface;
 use ActiveCollab\TemplatedUI\Test\Base\TestCase;
+use ActiveCollab\TemplatedUI\Test\Fixture\FruitEnum;
 use LogicException;
 use ActiveCollab\TemplatedUI\MethodInvoker\CatchAllParameters\CatchAllParametersInterface;
 use ActiveCollab\TemplatedUI\MethodInvoker\MethodInvoker;
@@ -181,6 +182,38 @@ class MethodInvokerTest extends TestCase
                             return 'Stringable object';
                         }
                     },
+                ],
+            ),
+        );
+    }
+
+    public function testWillTurnScalarToEnum(): void
+    {
+        $tag = new class() extends Tag {
+            public function render(FruitEnum $fruit): FruitEnum
+            {
+                return $fruit;
+            }
+        };
+
+        $invoker = new MethodInvoker($tag);
+
+        $this->assertSame(
+            FruitEnum::BANANA,
+            $invoker->invokeMethod(
+                'render',
+                [
+                    'fruit' => FruitEnum::BANANA,
+                ],
+            ),
+        );
+
+        $this->assertSame(
+            FruitEnum::BANANA,
+            $invoker->invokeMethod(
+                'render',
+                [
+                    'fruit' => 'banana',
                 ],
             ),
         );

@@ -33,13 +33,13 @@ class MethodInvoker implements MethodInvokerInterfaca
     private function getMethodParametersMap(string $methodName): array
     {
         if (!array_key_exists($methodName, $this->parameterMaps)) {
-            $this->parameterMaps[$methodName] = [];
-
             $reflection = new ReflectionClass($this->invocableMethodContext);
 
             if (!$reflection->hasMethod($methodName)) {
                 throw new LogicException(sprintf('Method %s not found in class %s.', $methodName, get_class($this)));
             }
+
+            $this->parameterMaps[$methodName] = [];
 
             $method = $reflection->getMethod($methodName);
 
