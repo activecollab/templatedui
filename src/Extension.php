@@ -14,6 +14,7 @@ use ActiveCollab\ContainerAccess\ContainerAccessInterface;
 use ActiveCollab\ContainerAccess\ContainerAccessInterface\Implementation as ContainerAccessImplementation;
 use ActiveCollab\TemplatedUI\Helper\HtmlHelpersTrait;
 use ActiveCollab\TemplatedUI\Integrate\SmartyFactoryInterface;
+use ActiveCollab\TemplatedUI\Util\TemplateUtilsResolverInterface;
 use ActiveCollab\TemplateEngine\TemplateEngineInterface;
 use RuntimeException;
 use simple_html_dom;
@@ -61,7 +62,20 @@ abstract class Extension implements ExtensionInterface, ContainerAccessInterface
     {
         return $this->getContainer()
             ->get(TemplateEngineInterface::class)
-                ->fetch($templatePath, $data);
+                ->fetch(
+                    $templatePath,
+                    array_merge(
+                        $data,
+                        $this->has(TemplateUtilsResolverInterface::class)
+                            ? $this->get(TemplateUtilsResolverInterface::class)->resolve()
+                            : []
+                    ),
+                );
+    }
+
+    protected function has(string $id): bool
+    {
+        return $this->getContainer()->has($id);
     }
 
     /**
