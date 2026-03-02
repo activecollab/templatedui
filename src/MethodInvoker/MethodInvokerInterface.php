@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace ActiveCollab\TemplatedUI\MethodInvoker;
 
-interface MethodInvokerInterfaca
+interface MethodInvokerInterface
 {
     public function invokeMethod(string $method, array $params = []);
 }

@@ -17,7 +17,7 @@ use ActiveCollab\TemplatedUI\MethodInvoker\ParameterCaster\ParameterCasterInterf
 use ReflectionClass;
 use RuntimeException;
 
-class MethodInvoker implements MethodInvokerInterfaca
+class MethodInvoker implements MethodInvokerInterface
 {
     public function __construct(
         private InvocableMethodContextInterface $invocableMethodContext,
